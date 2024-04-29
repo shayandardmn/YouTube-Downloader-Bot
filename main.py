@@ -85,3 +85,87 @@ publish date: {publish_date[0]}
     else:
         # Send message for user 
         await message.reply_text("❌ The link is wrong!.. try another link.")
+
+
+@bot.on_callback_query()
+async def callbackquery(client:Client, callbackquery: CallbackQuery):
+    user_id =callbackquery.from_user.id
+    data = callbackquery.data
+
+
+    if data == "audio":
+        # Delete message past
+        await callbackquery.message.delete()
+        sent_message = await callbackquery.message.reply_text(
+        text="⏳ Processing...",
+        )
+        youtube_audio= youtube.streams.get_by_itag(140)
+        youtube_audio.download(DOWNLOAD_LOCATION)
+        file_name = youtube.streams.get_by_itag(140).default_filename
+        file_dir = f"{DOWNLOAD_LOCATION}{file_name}"
+        # Send audio to user
+        await sent_message.edit(
+            text="📤 Sending..."
+        )
+        await callbackquery.message.reply_chat_action(enums.ChatAction.UPLOAD_AUDIO)
+        await client.send_audio(
+            chat_id=user_id,
+            audio=open(file_dir, "rb"),
+            caption="💫download by:\nYoutubed-Downloader-Bot",
+            file_name=file_name
+        )
+        await sent_message.delete()
+        # Delete video from disk after sending to user
+        os.remove(file_dir)
+
+
+    elif data == "360":
+        # Delete message past
+        await callbackquery.message.delete()
+        sent_message = await callbackquery.message.reply_text(
+        text="⏳ Processing...",
+        )
+        youtube_stream = youtube.streams.get_by_itag(18)
+        youtube_stream.download(DOWNLOAD_LOCATION)
+        file_name = youtube.streams.get_by_itag(18).default_filename
+        file_dir = f"{DOWNLOAD_LOCATION}{file_name}"
+        # Send video to user
+        await sent_message.edit(
+            text="📤 Sending..."
+        )
+        await callbackquery.message.reply_chat_action(enums.ChatAction.UPLOAD_VIDEO)
+        await client.send_video(
+            chat_id=user_id,
+            video=open(file_dir, "rb"),
+            caption="💫download by:\nYoutubed-Downloader-Bot",
+            file_name=file_name
+        )
+        await sent_message.delete()
+        # Delete video from disk after sending to user
+        os.remove(file_dir)
+
+        
+    elif data == "720":
+        # Delete message past
+        await callbackquery.message.delete()
+        sent_message = await callbackquery.message.reply_text(
+        text="⏳ Processing...",
+        )
+        youtube_stream = youtube.streams.get_by_itag(22)
+        youtube_stream.download(DOWNLOAD_LOCATION)
+        file_name = youtube.streams.get_by_itag(22).default_filename
+        file_dir = f"{DOWNLOAD_LOCATION}{file_name}"
+        # Send video to user
+        await sent_message.edit(
+            text="📤 Sending..."
+        )
+        await callbackquery.message.reply_chat_action(enums.ChatAction.UPLOAD_VIDEO)
+        await client.send_video(
+            chat_id=user_id,
+            video=open(file_dir, "rb"),
+            caption="💫download by:\nYoutubed-Downloader-Bot",
+            file_name=file_name
+        )
+        await sent_message.delete()
+        # Delete video from disk after sending to user
+        os.remove(file_dir)
